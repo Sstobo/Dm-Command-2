@@ -1,0 +1,19 @@
+const crElevenMonsters = [
+  
+    "The Behir is a massive serpent-like creature with iridescent blue scales and six legs that allow it to move with incredible speed and agility. Its long, sharp claws can rend flesh with ease, and its powerful jaws are filled with razor-sharp teeth that can crush bone. Its most fearsome ability, however, is its lightning breath - a bolt of electricity that can strike down even the hardiest of foes. It is said that those who face a Behir in combat should be prepared for a fight to the death, as this creature is a formidable foe indeed.",
+    "The Djinni is a creature of pure elemental air, with a body made of swirling winds and a commanding presence that demands respect. Its powers are vast and varied - it can control the winds themselves, summon lightning from the sky, and even grant wishes to those who earn its favor. Though it is not inherently malevolent, the Djinni is a proud creature that will not suffer disrespect or disobedience. Those who seek to summon a Djinni should do so with great care, lest they find themselves at the mercy of a creature far more powerful than themselves.",
+    "The Efreeti is a being of pure elemental fire, with skin as red as molten magma and eyes that burn with an inner flame. Its powers are no less impressive than those of its airy kin - it can conjure flames at will, shape the very fabric of reality to its will, and even grant wishes to those who can outwit it in a battle of wits. However, the Efreeti is also known for its capricious nature and its tendency to twist wishes to suit its own desires. Those who seek to bargain with an Efreeti should be prepared for a dangerous game indeed.",
+    "The Gynosphinx is a creature of myth and legend, with the body of a lioness and the head of a beautiful woman. Its powers of riddle and prophecy are legendary, and those who seek its wisdom must first prove themselves worthy by solving its cunning puzzles. However, the Gynosphinx is not to be trifled with - it is a creature of great pride and will not suffer foolishness or disrespect. Those who fail its tests may find themselves cursed or worse.",
+    "The Horned Devil is a fiendish creature with a body covered in iron-hard scales and a pair of curved horns that give it its name. Its powers of deception and manipulation are second to none, and it delights in tempting mortals into making deals that are inevitably to their detriment. Its claws and teeth are razor-sharp, and it is immune to most forms of mortal weaponry. Those who seek to confront a Horned Devil should do so with great care and a healthy dose of skepticism.",
+    "The Remorhaz is a massive insectoid creature with a body covered in bristling spines and a mouth full of razor-sharp teeth. It dwells in the coldest regions of the world and can survive even the most frigid temperatures. Its body generates intense heat, which it uses both to hunt and to defend itself from predators. Those who face a Remorhaz in combat should be prepared for a brutal fight, as this creature is capable of dealing massive amounts of damage with both its claws and its fiery breath.",
+    "The Roc is a massive bird of prey with wings that span dozens of feet and a beak that can rend flesh with ease. It is said that the Roc can carry off entire elephants in its talons, and that its feathers are worth a king's ransom. Its eyesight is unparalleled, allowing it to spot prey from great distances, and its speed is unmatched, allowing it to swoop down from the skies and snatch its prey before they have a chance to react.",
+
+]
+export const getRandomCrElevenMonster = () => {
+    let randomIndex = Math.floor(Math.random() * crElevenMonsters.length);
+    return (
+      "   [ Monster: " +
+      crElevenMonsters[randomIndex] + " ]   "
+    );
+  };
+  

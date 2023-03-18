@@ -1,0 +1,32 @@
+const crSixMonsters = [
+  
+   
+  "Standing on massive goat legs, the chimera is a fearsome sight to behold. With a dragon head, a goat head, and a lion head, the chimera is able to breathe fire, spit acid, and roar with a deafening force. Its massive wings enable it to fly at great speeds, and its sharp claws and teeth make it a formidable opponent. The chimera's scales are a deep shade of red and orange, and its eyes are a bright, glowing yellow. It has a long, snakelike tail that ends in a sharp stinger, and its mane and beard are made of writhing, hissing snakes. The chimera is a creature of great strength and ferocity, feared by all who encounter it.",
+
+  "The drider is a grotesque creature, with the upper body of a drow and the lower body of a giant spider. Its dark, purple skin is rough and scaly, and its eyes are a sickly green color. The drider's spider legs are long and spindly, covered in coarse black hair. Its upper body is lean and muscular, with sharp, angular features and a sneering expression. The drider is always ready for battle, with a quiver of poisoned arrows slung over its shoulder and a wicked-looking longsword strapped to its side. It is a creature of darkness, feared by all who venture into the depths of the Underdark.",
+  
+  "The invisible stalker is a being of pure air, invisible to the naked eye. It is a creature of the wind, and its body is made up of swirling clouds of mist that seem to take on a vaguely humanoid shape. The invisible stalker's movements are graceful and fluid, as if it is dancing through the air. Its touch is cold and clammy, leaving a trail of frost wherever it goes. The invisible stalker is a master of stealth, able to move silently and undetected through even the most heavily guarded areas. It is feared by all who feel a sudden chill in the air.",
+
+  "The mage is a master of magic, able to cast spells with incredible power and precision. It is a tall and slender figure, with a long white beard and piercing blue eyes that seem to glow with an inner light. The mage's robes are adorned with intricate patterns and symbols, and its staff is made of a dark, polished wood that seems to shimmer in the light. The mage's movements are graceful and fluid, and its voice carries a weight of authority that commands respect. It is a creature of immense knowledge, and its understanding of the arcane arts is surpassed only by its ability to wield them. It is a force to be reckoned with, feared by all who stand in its way.",
+
+"The mammoth is a massive creature, towering over all others in the animal kingdom. Its thick fur provides protection from the cold, and its long tusks can deliver a crushing blow. The mammoth is a creature of great strength and endurance, able to charge through even the toughest obstacles. Its back is covered in a thick layer of shaggy fur, and its eyes are small and beady. Its trunk is long and flexible, allowing it to grip and manipulate objects with ease. The mammoth's roar is a deafening sound that echoes across the tundra, striking fear into the hearts of its enemies. It is a wonder of the natural world, feared by all who dare to hunt it.",
+
+"The medusa is a creature of legend, with hair made of living snakes and a gaze that can turn a person to stone. It is a tall and striking figure, with a face that is both beautiful and terrifying. The medusa's eyes are a deep, hypnotic green, and its hair is a writhing mass of serpents with fangs that drip with venom. The medusa's body is lithe and muscular, with skin as smooth and cold as marble. Its movements are graceful and fluid, and its voice is a sibilant hiss that sends shivers down the spine. The medusa is a creature of darkness, feared by all who venture into its lair.",
+
+"The vrock is a demon of chaos, with massive wings and razor-sharp talons. Its body is covered in coarse black feathers, and its beak is long and curved like a scimitar. The vrock's eyes are a deep, fiery red, and its wingspan is massive, allowing it to soar through the air with ease. The vrock's screech is a horrific sound that can shatter glass and rupture eardrums. Its talons are sharp enough to tear through armor, and its beak can crush bone with ease. The vrock is a creature of destruction, feared by all who dare to stand in its way.",
+
+"The wyvern is a creature of the skies, with razor-sharp teeth and a venomous tail. Its scales are a dark shade of green, and its wings are large and leathery. The wyvern's eyes are a bright, piercing yellow, and its roar is a deafening sound that echoes across the land. The wyvern's tail is long and flexible, ending in a sharp, barbed stinger that drips with poison. Its body is lean and muscular, with powerful legs that allow it to take off and land with ease. The wyvern is a creature of great ferocity, feared by all who encounter it in the air or on the ground.",
+
+"The young brass dragon is a creature of legend, with scales as hard as steel and the ability to breathe fire. Its body is sleek and muscular, with bright, shining eyes that seem to sparkle with intelligence. The young brass dragon's wings are massive, allowing it to soar through the air with ease. Its claws are long and sharp, and its teeth are like daggers. The young brass dragon's roar is a deafening sound that can shake the ground and rattle the bones. It is a skilled fighter, able to use its massive claws and teeth to devastating effect. The young brass dragon is a creature of great intelligence, and it is often sought out by adventurers for its wisdom and guidance.",
+
+"The young white dragon is a creature of the cold, with scales as white as snow and the ability to breathe icy blasts. Its body is lean and muscular, with bright blue eyes that seem to sparkle with a fierce intelligence. The young white dragon's wings are large and leathery, allowing it to fly through the air with ease. Its claws are long and sharp, and its teeth are like icicles. The young white dragon's roar is a chilling sound that can freeze a person's blood. It is a creature of great ferocity, feared by all who venture into its lair.",
+]
+
+export const getRandomCrSixMonster = () => {
+    let randomIndex = Math.floor(Math.random() * crSixMonsters.length);
+    return (
+      "   [ Monster: " +
+      crSixMonsters[randomIndex] + " ]   "
+    );
+  };
+  
