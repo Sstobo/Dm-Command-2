@@ -48,18 +48,17 @@ export async function handleSubmit(prompt, setResponse)  {
 export async function handleImage(e, prompt, setImage) {
   e.preventDefault();
   const configuration = new Configuration({
-    apiKey: "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"
+    apiKey: "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"
   });
   const openai = new OpenAIApi(configuration);
 
-  const finalPrompt = prompt;
+  const finalPrompt = "Paint an epic fantasy scene: " + prompt;
   const shortPrompt = finalPrompt.length > 400 ? finalPrompt.substring(0, 400) + '...' : finalPrompt;
-  console.log("image " + prompt);
-  try {
+  console.log("image " + shortPrompt);
     const response = await openai.createImage({
         prompt: shortPrompt,
         n: 1,
-        size: "256x256",
+        size: "512x512",
       });
     
     if (response.status === 200) {
@@ -67,8 +66,5 @@ export async function handleImage(e, prompt, setImage) {
         setImage(response.data.data[0].url );
     }
   }
-  catch(error) {
-    console.error(error);
-  }
-}
+
 

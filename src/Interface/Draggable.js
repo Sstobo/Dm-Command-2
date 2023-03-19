@@ -9,7 +9,7 @@ function Draggable(props) {
   const style = {
     transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
     color: isDragging ? 'black' : undefined, // Add this line to change the text color when isDragging is true
-    background:  isDragging ? 'gold' : undefined,
+    backgroundColor:  isDragging ? '#EBBE7A' : undefined,
     zIndex: isDragging ? 10000 : undefined,
   };
 

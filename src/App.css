@@ -2,14 +2,16 @@
 body {
   background-color: #202020;
   color: white;
-  font-family: Arial, sans-serif;
+  background-size: 100% 100%;
+  background-image: url('./Assets/bg.png');
+  font-family: 'Cormorant', serif;
 }
 
 .active-draggable {
-  background-color: gold;
+  background-color: #EBBE7A;
   color: black;
 }
-p, h4 {
+p, h4,h3 {
   margin:0px;
 }
 
@@ -24,12 +26,18 @@ h3 {
 font-weight: 400;
 font-size: 32px;
 line-height: 39px;
-color:gold;
+color: #EBBE7A;
 }
 .App-header {
-  padding: 30px 50px;
-  border-bottom:1px dotted gold;
+  padding:20px 40px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
+.App-header img {
+  margin-right:100px;
+}
+
 .body-container {
   display: flex;
 }
@@ -38,18 +46,25 @@ color:gold;
   width:10%;
   min-width:200px;
   padding:20px;
-  border-right:1px dotted gold;
+  position: relative;
 }
 .left-menu-selection {
   padding:10px 0px;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   text-align: center;
   margin:3px 0px;
-  border: 1px solid gold;
   cursor: pointer;
   position:relative;
+  background-size: 100% 100%;
+  background-image: url('./Assets/button-border.png');
+  transition:all .2s ease-in-out;
+}
+
+.left-menu-selection:hover {
+  background-color:#EBBE7A;
+  color:black;
 }
 .workspace {
   width:90%;
@@ -63,6 +78,9 @@ color:gold;
   flex-direction: column;
 }
 
+.draggable-button:hover {
+  background-color:#EBBE7A;
+}
 .draggable-button {
   width: 180px;
   padding:10px 0px;
@@ -71,15 +89,16 @@ color:gold;
   align-items: center;
   text-align: center;
   margin:2px;
-  border: 1px solid gold;
   cursor: pointer;
   position:relative;
+  transition:all .2s ease-in-out;
+  background-size: 100% 100%;
+  background-image: url('./Assets/button-border.png');
 }
 
 
 .droppable-container {
   background-color: black;
-  border: 1px solid gold;
   width:fit-content;
   min-width:230px;
   padding:20px;
@@ -90,14 +109,20 @@ color:gold;
   align-items: center;
   gap:20px;
   z-index: 0;
+  height: fit-content;
+  max-width: 300px;
+ 
+}
+.droppable-container .horz-line {
+  width: 100%;
 }
 .droppable-container-heading {
-  border-bottom:1px dotted gold;
-  padding-bottom:20px;
-  margin-bottom:20px;
   width: 100%;
 }
 
+.draggable-container .horz-line {
+  width: 100%;
+}
 .droppableTargetBox {
   min-height:400px;
   width:200px;
@@ -105,7 +130,6 @@ color:gold;
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1px dotted gold;
 }
 .hover-box {
     position: absolute;
@@ -137,16 +161,70 @@ color:gold;
   flex-direction: column;
   padding: 20px;
 }
+
+.results-container img {
+  width: 100%;
+  max-height: 600px;
+  object-fit:contain;
+  margin:0px auto 20px auto;
+}
 .create-scenario-button {
-width: 180px;
-padding:10px 0px;
-display: flex;
-justify-content: center;
-align-items: center;
-text-align: center;
-margin:2px;
-background-color: white;
-color: black;
-border: 1px solid white;
-cursor: pointer;
+  width: 180px;
+  padding: 10px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 2px;
+  background-color: white;
+  color: black;
+  border: 1px solid white;
+  cursor: pointer;
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.create-scenario-button:hover {
+  animation: pulse .9s infinite;
+}
+
+.create-scenario-button:hover::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.4), transparent);
+  animation: shimmer .9s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+.vert-line {
+  position: absolute;
+    right: 0px;
+    top: -10px;
 }
