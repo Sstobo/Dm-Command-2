@@ -11,8 +11,10 @@ import logo from "./Assets/logo.svg";
 import creature from "./Assets/creature.svg";
 import npc from "./Assets/npc.svg";
 import encounter from "./Assets/encounter.svg";
-
+import Dice from "./Effects/D20";
 import "./App.css";
+import { Canvas } from '@react-three/fiber'
+
 
 function App() {
   const [droppedItems, setDroppedItems] = useState([]);
@@ -21,6 +23,7 @@ function App() {
   const npcs = useSelector((state) => state.npcs);
   const dispatch = useDispatch();
   const [activeId, setActiveId] = useState(null);
+  const [showDice , setShowDice] = useState(false);
   const [response, setResponse] = useState("Response will appear here.");
   const [selectedMenu, setSelectedMenu] = useState("encounters");
   const [image, setImage] = useState("");
@@ -33,6 +36,8 @@ function App() {
     <div className="App">
       <header className="App-header">
       <img src={logo} alt="logo" />
+
+   
       DM Command Centre is an open source GPT AI program. This is some information about the creator and how its to be used. Fusce nunc nisi, tincidunt eu interdum eu, vulputate elementum dui. Quisque rutrum semper rutrum. Sed a mattis turpis. Mauris tempor enim eget cursus convallis. Sed sit amet erat id turpis tempor porta. 
    
       </header>
@@ -67,7 +72,6 @@ function App() {
             onClick={() => handleMenuClick("npcs")}
             style={{
               backgroundColor: selectedMenu === "npcs" ? " #EBBE7A" : "",
-              color: selectedMenu === "npcs" ? "black" : "",
             }}
           >
             <img className="left-menu-selection-icon" src={npc} alt="npc" />
@@ -204,7 +208,8 @@ function App() {
                     .map((item) => item.payload)
                     .join(", ");
                     setImage("");
-                  handleSubmit(prompt, setResponse);
+                  handleSubmit(prompt, setResponse, setShowDice);
+                  setShowDice( true);
                 }}
               >
                 <h4>Create Scenario</h4>
@@ -218,6 +223,14 @@ function App() {
             ) : (
               <div className="result-image"></div>
             )}
+     {showDice && response.length < 50 && (
+  <Canvas>
+    <ambientLight />
+    <pointLight position={[10, 10, 10]} />
+    <Dice />
+  </Canvas>
+)}
+
             <h3>Scenario</h3>
             <p>{response}</p>
 
