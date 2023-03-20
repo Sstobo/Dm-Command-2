@@ -228,3 +228,10 @@ color: #EBBE7A;
     right: 0px;
     top: -10px;
 }
+
+.dice-container {
+  display: flex;
+  padding:20px;
+  width:200px;
+  height:200px;
+}

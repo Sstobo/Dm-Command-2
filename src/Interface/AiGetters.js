@@ -52,8 +52,8 @@ export async function handleImage(e, prompt, setImage) {
   });
   const openai = new OpenAIApi(configuration);
 
-  const finalPrompt = "Paint an epic fantasy scene: " + prompt;
-  const shortPrompt = finalPrompt.length > 600 ? finalPrompt.substring(0, 600) + '...' : finalPrompt;
+  const finalPrompt = "Imagine and epic fantasy scene, in the style of old dungeons and dragons art. Use this snippet: " + prompt;
+  const shortPrompt = finalPrompt.length > 800 ? finalPrompt.substring(0, 800) + '...' : finalPrompt;
   console.log("image " + shortPrompt);
     const response = await openai.createImage({
         prompt: shortPrompt,

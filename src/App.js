@@ -14,14 +14,37 @@ import encounter from "./Assets/encounter.svg";
 import Dice from "./Effects/D20";
 import "./App.css";
 import { Canvas } from '@react-three/fiber'
+import { motion } from "framer-motion"
+
+
+
+const spring = {
+  type: "spring",
+  damping: 10,
+  stiffness: 100
+}
+
+
+const dropAnimation = {
+  initial: { y: -100, opacity: 0 },
+  animate: { y: 0, opacity: 1 },
+  transition: {spring}
+};
+
+
 
 
 function App() {
-  const [droppedItems, setDroppedItems] = useState([]);
+  const dispatch = useDispatch();
+ 
+  // Global States
   const encounters = useSelector((state) => state.encounters);
   const monsters = useSelector((state) => state.monsters);
   const npcs = useSelector((state) => state.npcs);
-  const dispatch = useDispatch();
+  const locations = useSelector((state) => state.locations);
+
+  // Local States
+  const [droppedItems, setDroppedItems] = useState([]);
   const [activeId, setActiveId] = useState(null);
   const [showDice , setShowDice] = useState(false);
   const [response, setResponse] = useState("Response will appear here.");
@@ -45,6 +68,7 @@ function App() {
       <div className="body-container">
         
         <div className="left-menu">
+     
           <div
             className="left-menu-selection"
             onClick={() => handleMenuClick("encounters")}
@@ -56,6 +80,7 @@ function App() {
             <img className="left-menu-selection-icon" src={encounter} alt="encounter" />
             <div className="left-menu-selection-title">Encounters</div>
           </div>
+     
           <div
             className="left-menu-selection"
             onClick={() => handleMenuClick("monsters")}
@@ -77,6 +102,17 @@ function App() {
             <img className="left-menu-selection-icon" src={npc} alt="npc" />
             <div className="left-menu-selection-title">NPCs</div>
           </div>
+          <div
+            className="left-menu-selection"
+            onClick={() => handleMenuClick("locations")}
+            style={{
+              backgroundColor: selectedMenu === "locations" ? " #EBBE7A" : "",
+            }}
+          >
+            <img className="left-menu-selection-icon" src={npc} alt="npc" />
+            <div className="left-menu-selection-title">Locations</div>
+          </div>
+
 
           <img className="vert-line" src={verticalLineImage} alt="horizontal line" />
         </div>
@@ -89,6 +125,7 @@ function App() {
                 encounters,
                 monsters,
                 npcs,
+                locations,
                 droppedItems,
                 setActiveId
               )
@@ -99,6 +136,7 @@ function App() {
                 encounters,
                 monsters,
                 npcs,
+                locations,
                 droppedItems,
                 setDroppedItems,
                 dispatch
@@ -107,7 +145,8 @@ function App() {
           >
             {/* Encounters */}
             {selectedMenu === "encounters" && (
-              <div className="draggable-container">
+              <motion.div className="draggable-container" variants={dropAnimation} initial="initial" animate="animate">
+              
                 {encounters.map((encounter) => (
                   <Draggable
                     key={encounter.id}
@@ -126,12 +165,39 @@ function App() {
                     </div>
                   </Draggable>
                 ))}
-              </div>
+          
+              </motion.div>
             )}
+
+            {/* Locations */}
+            {selectedMenu === "locations" && (
+              <motion.div className="draggable-container" variants={dropAnimation} initial="initial" animate="animate">
+                {locations.map((location) => (
+                  <Draggable
+                    key={location.id}
+                    id={location.id}
+                    payload={location.payload}
+                  >
+                    <div className="draggable-item">
+                      <div className="draggable-item-header">
+                        <div className="draggable-item-title">
+                          <h4>{location.content}</h4>
+                          <div className="hover-box">
+                            <p>{location.payload}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Draggable>
+                ))}
+              </motion.div>
+            )}
+            
+
 
             {/* Monsters */}
             {selectedMenu === "monsters" && (
-              <div className="draggable-container">
+               <motion.div className="draggable-container" variants={dropAnimation} initial="initial" animate="animate">
                 {monsters.map((monster) => (
                   <Draggable
                     key={monster.id}
@@ -150,12 +216,12 @@ function App() {
                     </div>
                   </Draggable>
                 ))}
-              </div>
+              </motion.div>
             )}
 
             {/* NPCs */}
             {selectedMenu === "npcs" && (
-              <div className="draggable-container">
+               <motion.div className="draggable-container" variants={dropAnimation} initial="initial" animate="animate">
                 {npcs.map((npc) => (
                   <Draggable key={npc.id} id={npc.id} payload={npc.payload}>
                     <div className="draggable-item">
@@ -170,9 +236,9 @@ function App() {
                     </div>
                   </Draggable>
                 ))}
-              </div>
+              </motion.div>
             )}
-
+     <motion.div className="draggable-container" variants={dropAnimation} initial="initial" animate="animate"></motion.div>
             <div className="droppable-container">
               <h3 className="droppable-container-heading">Instance</h3>
               <img className="horz-line" src={horizontalLineImage} alt="horizontal line" />
@@ -198,6 +264,7 @@ function App() {
                     </Draggable>
                   ))}
                 </div>
+                
               </Droppable>
 
               <div
@@ -223,13 +290,17 @@ function App() {
             ) : (
               <div className="result-image"></div>
             )}
-     {showDice && response.length < 50 && (
-  <Canvas>
-    <ambientLight />
-    <pointLight position={[10, 10, 10]} />
-    <Dice />
-  </Canvas>
-)}
+                {showDice && response.length < 50 && (
+                  <div className="dice-container">
+              <Canvas 
+                camera={{ position: [0, 0, 10], fov: 50 }}
+              >
+                <ambientLight />
+                <pointLight position={[10, 10, 10]} />
+                <Dice />
+              </Canvas>
+            </div>
+            )}
 
             <h3>Scenario</h3>
             <p>{response}</p>
