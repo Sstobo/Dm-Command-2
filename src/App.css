@@ -11,17 +11,37 @@ body {
   background-color: #EBBE7A;
   color: black;
 }
-p, h4,h3 {
-  margin:0px;
+
+p {
+  margin:0px 0px 10px 0px;
+}
+
+h2 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 39px;
+  color: white;
+  margin:0px 0px 10px 0px;
+}
+h5, h6 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 30px;
+  color: #EBBE7A;
+  margin:0px 0px 10px 0px;
 }
 
 h4 {
+  margin:0px;
   font-style: normal;
 font-weight: 400;
 font-size: 14px;
 line-height: 17px;
 }
 h3 {
+  margin:0px;
   font-style: normal;
 font-weight: 400;
 font-size: 32px;
@@ -234,4 +254,34 @@ color: #EBBE7A;
   padding:20px;
   width:200px;
   height:200px;
+}
+
+ul {
+  padding:0px;
+  margin:0px;
+}
+.adventure-choice {
+  list-style-type: none;
+  padding:10px;
+  margin:20px 0px 0px;;
+  cursor: pointer;
+  position:relative;
+  transition:background-color .2s ease-in-out;
+  background-size: 100% 100%;
+  background-color:black;
+}
+
+.adventure-choice:hover {
+  background-color:#414141;
+
+  transition:all .2s ease-in-out;
+}
+.adventure-choice h5 {
+ background-image: url('./Assets/underline.png');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100% 1px;
+  /* add some padding to the bottom of the text */
+  padding-bottom: 10px;
+
 }
