@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 
-export async function handleSubmit(prompt, setResponse, setFormattedResponse) {
+export async function handleSubmit(prompt, setResponse) {
   const configuration = new Configuration({
     apiKey: "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",
   });
@@ -41,53 +41,69 @@ export async function handleSubmit(prompt, setResponse, setFormattedResponse) {
       n: 1,
     })
     .then((response) => {
-      setResponse(response.data.choices[0].message.content);
-      console.log(response);
+      if (Array.isArray(response.data.choices) && response.data.choices.length > 0) {
+        setResponse(response.data.choices[0].message.content);
+        console.log(response);
+      } else {
+        console.error("Invalid response:", response);
+   
+      }
     })
     .catch((error) => {
       console.error(error);
+
     });
 }
 
 
-  export async function handleSubmitChoice(setResponse, formattedResponse, setFormattedResponse) {
+  export async function handleSubmitChoice(option, prompt,  setResponse, backstory, setBackstory) {
     const configuration = new Configuration({
       apiKey: "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",
     });
     const openai = new OpenAIApi(configuration);
-  
+    
+    // add the option to the backstory
+    setBackstory(backstory => [...backstory, option]);
+
     setResponse("Rolling...");
-  
+    option = JSON.stringify(option);
     const followupMessage = [
-      { role: "system", content: "We are continuing the scenario from the previous scene." },
-      { role: "assistant", content: "Please use the following prompts to create the next scene in the scenario." },
+      { role: "system", content: "We are continuing the scenario from the previous scene. You are a dungeon masters assistant. You write in an epic fantasy style. For context, this story is centered around these things, although that my change as we progress scenes:" + prompt },
+      { role: "assistant", content: "Please use the following prompts to create the next scene in the scenario. Here is the backstory so far: "  + backstory},
       {
         role: "user",
         content:
-          `{"title":"Title of the scenario","body":"Description of the scenario AT LEAST 400 words!!","options":[{"title":"Title of option 1","read":"Description of what happens if the player chooses option 1","dm_notes":"Notes for the DM on what happens next if the player chooses option 1"},{"title":"Title of option 2","read":"Description of what happens if the player chooses option 2","dm_notes":"Notes for the DM on what happens next if the player chooses option 2"},{"title":"Title of option 3","read":"Description of what happens if the player chooses option 3","dm_notes":"Notes for the DM on what happens next if the player chooses option 3"}]} You MUST return results like this. Use these prompts to remember the previous scene and create the next one.  ` +  formattedResponse      },
+          `Return the next scene, using the following information to understand the PREVIOUS scene:` +  option + ' This is the most important part! Return your response in the same style of array. "Please provide the information in the following format:{"title":"Title of the scenario","body":"Description of the scenario AT LEAST 450 words!!","options":[{"title":"Title of option 1","read":"Description of what happens if the player chooses option 1","dm_notes":"Notes for the DM on what happens next if the player chooses option 1"},{"title":"Title of option 2","read":"Description of what happens if the player chooses option 2","dm_notes":"Notes for the DM on what happens next if the player chooses option 2"},{"title":"Title of option 3","read":"Description of what happens if the player chooses option 3","dm_notes":"Notes for the DM on what happens next if the player chooses option 3"}]} No extra white spaces or characters. It MUST be a perfect object in string form, for our app to work. DO NOT ADD ANY BACKSLASHES or unwanted characters. Dont return a fake array with quotes or anything like that, this Good luck!'    },
     ];
   // model: "gpt-3.5-turbo",
+    // convert option to string
 
-  console.log("followup prompt:" + followupMessage);
-  const response = await openai
-    .createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: followupMessage,
-      temperature: 0.7,
-      max_tokens: 2000,
-      top_p: 1,
-      frequency_penalty: 0.1,
-      presence_penalty: 0,
-      n: 1,
-    })
-   .then((response) => {
-      setResponse(response.data.choices[0].message.content);
-      console.log(response);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
+    console.log(option);
+    console.log(followupMessage);
+    const response = await openai
+      .createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: followupMessage,
+        temperature: 0.7,
+        max_tokens: 2000,
+        top_p: 1,
+        frequency_penalty: 0.1,
+        presence_penalty: 0,
+        n: 1,
+      })
+      try {
+        if (Array.isArray(response.data.choices) && response.data.choices.length > 0) {
+          setResponse(response.data.choices[0].message.content);
+          console.log(response);
+        } else {
+          console.error("Invalid response:", response);
+        }
+      } catch(error) {
+        console.error(error);
+      }
+  }
+
+
 
 export async function handleImage(e, prompt, setImage) {
   e.preventDefault();
