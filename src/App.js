@@ -7,7 +7,8 @@ import { handleDragStart, handleDragEnd } from "./Interface/Handlers";
 import {
   handleSubmit,
   handleImage,
-  handleSubmitChoice,
+  handleBeginStory,
+  handleDecision,
 } from "./Interface/AiGetters";
 import horizontalLineImage from "./Assets/horizontal_line.png";
 import verticalLineImage from "./Assets/vertical_line.png";
@@ -44,20 +45,14 @@ function App() {
   // Local States
   const [droppedItems, setDroppedItems] = useState([]);
   const [activeId, setActiveId] = useState(null);
+  const [decision, setDecision] = useState("");
   const [showDice, setShowDice] = useState(false);
+  const [story, setStory] = useState("Story will appear here.");
+  const [scenario, setScenario] = useState("Scenario will appear here.");
   const [response, setResponse] = useState("Response will appear here.");
   const [selectedMenu, setSelectedMenu] = useState("encounters");
   const [image, setImage] = useState("");
-  const [formattedResponse, setFormattedResponse] = useState();
-  const [ backstory, setBackstory ] = useState("Backstory will appear here.");
-
-  useEffect(() => {
-    if (response.length > 50) {
-      const formatted = JSON.parse(response);
-      setFormattedResponse(formatted);
-      console.log(formattedResponse);
-    }
-  }, [response]);
+  const [backstory, setBackstory] = useState("Backstory will appear here.");
 
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
@@ -282,6 +277,9 @@ function App() {
               initial="initial"
               animate="animate"
             ></motion.div>
+
+
+          {story.length < 50 && (
             <div className="droppable-container">
               <h3 className="droppable-container-heading">Instance</h3>
               <img
@@ -321,27 +319,55 @@ function App() {
                     .map((item) => item.payload)
                     .join(", ");
                   setImage("");
-                  handleSubmit(
-                    prompt,
-                    setResponse,
-                    setShowDice,
-                    setFormattedResponse
-                  );
+                  handleSubmit(prompt, setStory, setShowDice);
                   setShowDice(true);
                 }}
               >
                 <h4>Create Scenario</h4>
               </div>
             </div>
+          )}
           </DndContext>
 
           <div className="results-container">
-            {image.length > 0 ? (
-              <img className="result-image" src={image} alt="result" />
-            ) : (
-              <div className="result-image"></div>
+            {scenario.length > 40 && (
+              <div className="scenario-container">
+          
+                <div>
+                  {/* <p>{scenario}</p> */}
+                  {/* parse this string into html */}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: scenario,
+                    }}
+                  />
+
+                
+                </div>
+
+                <input
+                  className="decision-input"
+                  type="text"
+                  value={decision}
+                  onChange={(e) => setDecision(e.target.value)}
+                />
+
+                <div
+                role="button"
+                className="create-scenario-button"
+                onClick={() => {
+                  handleDecision(decision, story, scenario, setScenario);
+                  setDecision("");
+                }}
+              >
+
+                  <h4>What do you do?</h4>
+                    
+                </div>
+              </div>
             )}
-            {showDice && response.length < 50 && (
+
+            {showDice && story.length < 50 && (
               <div className="dice-container">
                 <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
                   <ambientLight />
@@ -351,48 +377,19 @@ function App() {
               </div>
             )}
 
-            {formattedResponse ? (
+            {story.length > 50 && scenario.length < 30 && (
               <div>
-                <h2>{formattedResponse.title}</h2>
-                <p>{formattedResponse.body}</p>
-                <ul>
-                  {formattedResponse.options.map((option, index) => (
-                    <li
-                      role="button"
-                      id={"choice-" + index}
-                      className="adventure-choice"
-                      key={index}
-                      onClick={(e) => {
-                        let prompt = droppedItems
-                          .map((item) => item.payload)
-                          .join(", ");
-                        handleSubmitChoice(option, prompt, setResponse, backstory, setBackstory);
-                      }}
-                    >
-                      <h5>{option.title}</h5>
-                      <p>{option.read}</p>
-                      <p>
-                        <em>DM Notes: {option.dm_notes}</em>
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : (
-              <>{response}</>
-            )}
-
-            {response.length > 50 && (
+              <h2>We are ready to go!!</h2>
               <div
                 role="button"
                 className="create-scenario-button"
-                onClick={(e) => {
-                  setImage("");
-                  handleImage(e, response, setImage);
+                onClick={() => {
+                  handleBeginStory(story, setScenario, setShowDice);
                 }}
               >
-                Confirm Image
+                Confirm story and begin
               </div>
+            </div>
             )}
           </div>
         </div>

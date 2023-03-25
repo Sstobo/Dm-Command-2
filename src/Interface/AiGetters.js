@@ -1,30 +1,26 @@
 import { Configuration, OpenAIApi } from "openai";
+import { arrayCalibration} from "./PromptCalibration";
 
-export async function handleSubmit(prompt, setResponse) {
+export async function handleSubmit(prompt, setStory) {
+  // stringigy arrayCalibration
+  const stringifiedCalibration = JSON.stringify(arrayCalibration);
+
   const configuration = new Configuration({
     apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
 
-  setResponse("Rolling...");
-
-  const promptCalibration =
-    "Welcome, GPT-4. In this exercise, you will be generating story prompts to be read out loud to the players. You will not be writing the entire story however.  You will be told a series of prompts wrapped in brackets. Each prompt will consist of two parts: the type of prompt it is, and the content. Here is what to do with the different types of prompts: Encounters describe what is currently happening. You should imagine a scenario that does not have larger scope than the Encounter. Monsters are creatures to incorporate into the scene, usually responsible for the Encounter, if there are two or more monsters in the scene, either have them fighting, or working together. Items are objects that can be found in the scene. NPCs are characters that can be found in the scene. Include NPCS as being affected by the Encounter. Locations are the places where the scene takes place. Always refer to the player 'you' in the present tense.";
-
-  const assistantCalibration =
-    "We are a dungeon master. We will be creating scenes for the players, with both text to read out loud to them, and notes for the DM to run the scene, and they will be choosing their outcomes. We will be using a series of prompts that will follow. Be sure to include them all! That is very important, we want a ton of detail to carry over from the prompts. Can you write me an initial scene to read to my players.  This initial scene must dramatically explain the current location and environmnent around the listeners. Write at least a parahraph of just visual, audio and sensory description of what the listeners see. Then three possible choices for the player to choose from. The choices sections should include 200 words describing the possible action the player can take, written to be read aloud TO the player. Then it should also include at least 200 words written to the DM, in italics, explaining what will happen IF the player chooses to do this.  ";
+  setStory("Rolling Story...");
 
   const GPT35TurboMessage = [
-    { role: "system", content: promptCalibration },
-    { role: "assistant", content: assistantCalibration },
+    { role: "system", content: stringifiedCalibration },
+    { role: "assistant", content: prompt },
     {
       role: "user",
       content:
-        'Please provide the information in the following format:{"title":"Title of the scenario","body":"Description of the scenario AT LEAST 450 words!!","options":[{"title":"Title of option 1","read":"Description of what happens if the player chooses option 1","dm_notes":"Notes for the DM on what happens next if the player chooses option 1"},{"title":"Title of option 2","read":"Description of what happens if the player chooses option 2","dm_notes":"Notes for the DM on what happens next if the player chooses option 2"},{"title":"Title of option 3","read":"Description of what happens if the player chooses option 3","dm_notes":"Notes for the DM on what happens next if the player chooses option 3"}]} Please provide the information in this exact format to ensure that it can be easily integrated into our system. Return ONLY the array, not any quotes or text outside of the opening and closing braces.   Each option should have a title, a description of what happens if the player chooses that option, and some notes for the DM on what happens next in the story. Following this section we will give you the ingredients you need to imagine these scenarios.The initial scene MUST reference each of these elements. It is up to you to use the ingredients wrapped in [] brackets, and combine them all together. Describe the locations, include all the creatures, and create a fantastic dungeons and dragons event! Remember this MUST return as the array format we mentioned. The returned text MUST start with a { and end with a }. If not the entire app breaks my friend!. Here are the ideas to incorporate, have fun! Remember - 500 words MINIMUM for the scene intro description. This is the perfect place to be verbose and descriptive. Set the mood, tone and scene. We want to FEEL it! In the intro - mention the setting, the encounter and all the monsters and npcs. VERY IMPORTANT. Good luck, you are a great author and DM! Be sure to season the story liberally with lore from the [Settings]: ' +
-        prompt,
+        'Create an array of exciting, creative, and imaginative stories and information based on the system index provided. Dive deep into each chapter and scenario, adding rich details, captivating narratives, and engaging characters that will enthrall players and motivate them to journey further into the story. This is the overview we will reference later for our grand adventure. This will help us follow a larger plot, and not forget details. Consider the key themes and environments, and craft a vibrant world that transports players into the heart of each chapter. Let your imagination run wild and bring the story to life, ensuring each element is a memorable and thrilling experience. Follow the pattern set in system index, and use the prompts from the assistant index to guide you. VERY IMPORTANT. Your response MUST be in the exact same format st the assistant index prompt. Follow that array strucutre exactly or the app will break.',
     },
   ];
-
 
   // model: "gpt-3.5-turbo",
 
@@ -33,7 +29,7 @@ export async function handleSubmit(prompt, setResponse) {
     .createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: GPT35TurboMessage,
-      temperature: 0.7,
+      temperature: 0.75,
       max_tokens: 2000,
       top_p: 1,
       frequency_penalty: 0.1,
@@ -41,8 +37,8 @@ export async function handleSubmit(prompt, setResponse) {
       n: 1,
     })
     .then((response) => {
-      if (Array.isArray(response.data.choices) && response.data.choices.length > 0) {
-        setResponse(response.data.choices[0].message.content);
+      if (response.data.choices.length > 0) {
+        setStory(response.data.choices[0].message.content);
         console.log(response);
       } else {
         console.error("Invalid response:", response);
@@ -51,57 +47,114 @@ export async function handleSubmit(prompt, setResponse) {
     })
     .catch((error) => {
       console.error(error);
-
     });
 }
 
 
-  export async function handleSubmitChoice(option, prompt,  setResponse, backstory, setBackstory) {
-    const configuration = new Configuration({
-      apiKey: "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",
-    });
-    const openai = new OpenAIApi(configuration);
-    
-    // add the option to the backstory
-    setBackstory(backstory => [...backstory, option]);
 
-    setResponse("Rolling...");
-    option = JSON.stringify(option);
-    const followupMessage = [
-      { role: "system", content: "We are continuing the scenario from the previous scene. You are a dungeon masters assistant. You write in an epic fantasy style. For context, this story is centered around these things, although that my change as we progress scenes:" + prompt },
-      { role: "assistant", content: "Please use the following prompts to create the next scene in the scenario. Here is the backstory so far: "  + backstory},
-      {
-        role: "user",
-        content:
-          `Return the next scene, using the following information to understand the PREVIOUS scene:` +  option + ' This is the most important part! Return your response in the same style of array. "Please provide the information in the following format:{"title":"Title of the scenario","body":"Description of the scenario AT LEAST 450 words!!","options":[{"title":"Title of option 1","read":"Description of what happens if the player chooses option 1","dm_notes":"Notes for the DM on what happens next if the player chooses option 1"},{"title":"Title of option 2","read":"Description of what happens if the player chooses option 2","dm_notes":"Notes for the DM on what happens next if the player chooses option 2"},{"title":"Title of option 3","read":"Description of what happens if the player chooses option 3","dm_notes":"Notes for the DM on what happens next if the player chooses option 3"}]} No extra white spaces or characters. It MUST be a perfect object in string form, for our app to work. DO NOT ADD ANY BACKSLASHES or unwanted characters. Dont return a fake array with quotes or anything like that, this Good luck!'    },
-    ];
+// Begin
+
+export async function handleBeginStory(story, setScenario) {
+  // stringigy arrayCalibration
+  const stringifiedCalibration = JSON.stringify(arrayCalibration);
+
+  const configuration = new Configuration({
+    apiKey: "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",
+  });
+  const openai = new OpenAIApi(configuration);
+
+  setScenario("Rolling Scenario...");
+
+  const GPT35TurboMessage = [
+    { role: "system", content: story },
+    { role: "assistant", content: "IMPORTANT: Draw all of the story context from the system index. We are currently on scene one, scenario one. The players name is Sean" },
+    {
+      role: "user",
+      content:
+        'You are DM-Bot. You only write responses in a format designed to be read to the players. You consult the index in your system tab to give you story information and context. Your goal is to provide text for a human dungeon master to read, generated from the pre-existing story, and then we allow the players to choose their next action. We do not offer choices, the players must be creative. Read the system index, and write the introduction to read to the players. We want to describe the world we are in, the overall goals of our quest, how we got involved in the quest, and what is currently happening in the first scenario we are in. ',
+    },
+  ];
+
   // model: "gpt-3.5-turbo",
-    // convert option to string
 
-    console.log(option);
-    console.log(followupMessage);
-    const response = await openai
-      .createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: followupMessage,
-        temperature: 0.7,
-        max_tokens: 2000,
-        top_p: 1,
-        frequency_penalty: 0.1,
-        presence_penalty: 0,
-        n: 1,
-      })
-      try {
-        if (Array.isArray(response.data.choices) && response.data.choices.length > 0) {
-          setResponse(response.data.choices[0].message.content);
-          console.log(response);
-        } else {
-          console.error("Invalid response:", response);
-        }
-      } catch(error) {
-        console.error(error);
+  console.log(GPT35TurboMessage);
+  const response = await openai
+    .createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: GPT35TurboMessage,
+      temperature: 0.75,
+      max_tokens: 500,
+      top_p: 1,
+      frequency_penalty: 0.1,
+      presence_penalty: 0,
+      n: 1,
+    })
+    .then((response) => {
+      if (response.data.choices.length > 0) {
+        setScenario(response.data.choices[0].message.content);
+        console.log("scenario" + response);
+      } else {
+        console.error("Invalid scenario:", response);
+   
       }
-  }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+
+// Decide
+
+export async function handleDecision(decision, story, scenario, setScenario) {
+  // stringigy arrayCalibration
+  const stringifiedCalibration = JSON.stringify(arrayCalibration);
+
+  const configuration = new Configuration({
+    apiKey: "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",
+  });
+  const openai = new OpenAIApi(configuration);
+
+
+  const GPT35TurboMessage = [
+    { role: "system", content: story },
+    { role: "assistant", content: "The PREVIOUS SCENE players are reacting to: " + scenario },
+    {
+      role: "user",
+      content:
+        'You are DM-Bot. You only write responses in a format designed to be read to the players. You consult the index in your system tab to give you story information and context. Your goal is to provide text for a human dungeon master to read, generated from the pre-existing story, and then we allow the players to choose their next action. We do not offer choices, the players must be creative. Start with 100 words or describing the visual, audio ect details. Then detail the scenario the players find themselves in. Embellish using details from the system index. DO NOT REPEAT THE PREVIOUS SCENE, move on from it. VERY MOST IMPORTANT THING: The players can do ANYTHING they want, and you must mold the story to accomodate, even if it means you need to change things dramatically.  In the last scene, the players decided to: ' + decision + '. Remember - this decision is the SINGLE MOST IMPORTANT THING IN THIS PROMPT. Return the result in html format, with a <h1> title of the story, an <h2> wrapping the scenario title, and a <p> wrapping the scenario text.',
+    },
+  ];
+
+  // model: "gpt-3.5-turbo",
+
+  console.log(GPT35TurboMessage);
+  const response = await openai
+    .createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: GPT35TurboMessage,
+      temperature: 0.76,
+      max_tokens: 500,
+      top_p: 1,
+      frequency_penalty: 0.1,
+      presence_penalty: 0,
+      n: 1,
+    })
+    .then((response) => {
+      if (response.data.choices.length > 0) {
+        setScenario(response.data.choices[0].message.content);
+        console.log("scenario" + response);
+      } else {
+        console.error("Invalid scenario:", response);
+   
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+
 
 
 

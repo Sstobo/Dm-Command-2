@@ -285,3 +285,25 @@ ul {
   padding-bottom: 10px;
 
 }
+
+
+.decision-input {
+  width:fit-content;
+  min-width:400px;
+  height:60px;
+  margin:20px 0px;
+  padding:10px;
+  border: none !important;
+  position: relative;
+  background-image: url('./Assets/underline.png');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100% 1px;
+  background-color:black;
+  color:white;
+  font-family: 'Cormorant', serif;
+  font-size: 18px;
+  font-weight: bold;;
+  /* text-wrap wrap */
+  overflow-wrap: break-word;
+}
