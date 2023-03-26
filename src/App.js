@@ -21,6 +21,7 @@ import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import { motion } from "framer-motion";
 
+import  CharacterCreator  from "./Components/CharacterCreator";
 const spring = {
   type: "spring",
   damping: 10,
@@ -42,6 +43,22 @@ function App() {
   const npcs = useSelector((state) => state.npcs);
   const locations = useSelector((state) => state.locations);
 
+  const [playerCharacter, setPlayerCharacter] = useState({
+    name: '',
+    class: '',
+    race: '',
+    stats: {
+      strength: 0,
+      dexterity: 0,
+      constitution: 0,
+      intelligence: 0,
+      wisdom: 0,
+      charisma: 0,
+    },
+    equipment: [],
+  });
+
+  console.log(playerCharacter);
   // Local States
   const [droppedItems, setDroppedItems] = useState([]);
   const [activeId, setActiveId] = useState(null);
@@ -49,6 +66,7 @@ function App() {
   const [showDice, setShowDice] = useState(false);
   const [story, setStory] = useState("Story will appear here.");
   const [scenario, setScenario] = useState("Scenario will appear here.");
+  const [sceneNumber, setSceneNumber] = useState(1);
   const [response, setResponse] = useState("Response will appear here.");
   const [selectedMenu, setSelectedMenu] = useState("encounters");
   const [image, setImage] = useState("");
@@ -67,6 +85,7 @@ function App() {
         tincidunt eu interdum eu, vulputate elementum dui. Quisque rutrum semper
         rutrum. Sed a mattis turpis. Mauris tempor enim eget cursus convallis.
         Sed sit amet erat id turpis tempor porta.
+
       </header>
       <img
         className="horz-line"
@@ -126,6 +145,20 @@ function App() {
             <img className="left-menu-selection-icon" src={npc} alt="npc" />
             <div className="left-menu-selection-title">Locations</div>
           </div>
+
+
+          <div
+            className="left-menu-selection"
+            onClick={() => handleMenuClick("createPlayer")}
+            style={{
+              backgroundColor: selectedMenu === "createPlayer" ? " #EBBE7A" : "",
+            }}
+          >
+            <img className="left-menu-selection-icon" src={npc} alt="npc" />
+            <div className="left-menu-selection-title">Create Character</div>
+          </div>
+
+
 
           <img
             className="vert-line"
@@ -271,6 +304,23 @@ function App() {
               </motion.div>
             )}
 
+               
+            {selectedMenu === "createPlayer" && (
+              <motion.div
+                className="draggable-container"
+                variants={dropAnimation}
+                initial="initial"
+                animate="animate"
+              >
+
+               <CharacterCreator 
+                playerCharacter={playerCharacter}
+                setPlayerCharacter={setPlayerCharacter}
+                />
+
+              </motion.div>
+            )}
+
             <motion.div
               className="draggable-container"
               variants={dropAnimation}
@@ -281,7 +331,7 @@ function App() {
 
           {story.length < 50 && (
             <div className="droppable-container">
-              <h3 className="droppable-container-heading">Instance</h3>
+              <h3 className="droppable-container-heading">Story Suggestions</h3>
               <img
                 className="horz-line"
                 src={horizontalLineImage}
@@ -319,7 +369,7 @@ function App() {
                     .map((item) => item.payload)
                     .join(", ");
                   setImage("");
-                  handleSubmit(prompt, setStory, setShowDice);
+                  handleSubmit(prompt, setStory, playerCharacter);
                   setShowDice(true);
                 }}
               >
@@ -330,6 +380,9 @@ function App() {
           </DndContext>
 
           <div className="results-container">
+
+            {image}
+
             {scenario.length > 40 && (
               <div className="scenario-container">
           
@@ -356,8 +409,11 @@ function App() {
                 role="button"
                 className="create-scenario-button"
                 onClick={() => {
-                  handleDecision(decision, story, scenario, setScenario);
+                  handleImage(scenario, setImage)
+                  handleDecision(decision, story, scenario, setScenario, sceneNumber, playerCharacter);
                   setDecision("");
+
+                  setSceneNumber(sceneNumber + 1);
                 }}
               >
 
@@ -384,7 +440,7 @@ function App() {
                 role="button"
                 className="create-scenario-button"
                 onClick={() => {
-                  handleBeginStory(story, setScenario, setShowDice);
+                  handleBeginStory(story, setScenario, scenario, playerCharacter);
                 }}
               >
                 Confirm story and begin
