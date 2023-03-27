@@ -32,7 +32,7 @@ export async function handleSubmit(prompt, setStory, playerCharacter) {
       model: "gpt-3.5-turbo",
       messages: GPT35TurboMessage,
       temperature: 0.75,
-      max_tokens: 2000,
+      max_tokens: 1000,
       top_p: 1,
       frequency_penalty: 0.1,
       presence_penalty: 0,

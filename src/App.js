@@ -21,7 +21,7 @@ import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import { motion } from "framer-motion";
 
-import  CharacterCreator  from "./Components/CharacterCreator";
+import CharacterCreator from "./Components/CharacterCreator";
 const spring = {
   type: "spring",
   damping: 10,
@@ -44,9 +44,9 @@ function App() {
   const locations = useSelector((state) => state.locations);
 
   const [playerCharacter, setPlayerCharacter] = useState({
-    name: '',
-    class: '',
-    race: '',
+    name: "",
+    class: "",
+    race: "",
     stats: {
       strength: 0,
       dexterity: 0,
@@ -85,7 +85,6 @@ function App() {
         tincidunt eu interdum eu, vulputate elementum dui. Quisque rutrum semper
         rutrum. Sed a mattis turpis. Mauris tempor enim eget cursus convallis.
         Sed sit amet erat id turpis tempor porta.
-
       </header>
       <img
         className="horz-line"
@@ -146,19 +145,17 @@ function App() {
             <div className="left-menu-selection-title">Locations</div>
           </div>
 
-
           <div
             className="left-menu-selection"
             onClick={() => handleMenuClick("createPlayer")}
             style={{
-              backgroundColor: selectedMenu === "createPlayer" ? " #EBBE7A" : "",
+              backgroundColor:
+                selectedMenu === "createPlayer" ? " #EBBE7A" : "",
             }}
           >
             <img className="left-menu-selection-icon" src={npc} alt="npc" />
             <div className="left-menu-selection-title">Create Character</div>
           </div>
-
-
 
           <img
             className="vert-line"
@@ -304,7 +301,6 @@ function App() {
               </motion.div>
             )}
 
-               
             {selectedMenu === "createPlayer" && (
               <motion.div
                 className="draggable-container"
@@ -312,12 +308,10 @@ function App() {
                 initial="initial"
                 animate="animate"
               >
-
-               <CharacterCreator 
-                playerCharacter={playerCharacter}
-                setPlayerCharacter={setPlayerCharacter}
+                <CharacterCreator
+                  playerCharacter={playerCharacter}
+                  setPlayerCharacter={setPlayerCharacter}
                 />
-
               </motion.div>
             )}
 
@@ -328,64 +322,63 @@ function App() {
               animate="animate"
             ></motion.div>
 
+            {story.length < 50 && (
+              <div className="droppable-container">
+                <h3 className="droppable-container-heading">
+                  Story Suggestions
+                </h3>
+                <img
+                  className="horz-line"
+                  src={horizontalLineImage}
+                  alt="horizontal line"
+                />
+                <Droppable id="droppable-box">
+                  <div className="droppableTargetBox">
+                    {droppedItems.map((item) => (
+                      <Draggable
+                        key={item.id}
+                        id={item.id}
+                        payload={item.payload}
+                      >
+                        <div className="draggable-item">
+                          <div className="draggable-item-header">
+                            <div className="draggable-item-title">
+                              <h4>{item.content}</h4>
 
-          {story.length < 50 && (
-            <div className="droppable-container">
-              <h3 className="droppable-container-heading">Story Suggestions</h3>
-              <img
-                className="horz-line"
-                src={horizontalLineImage}
-                alt="horizontal line"
-              />
-              <Droppable id="droppable-box">
-                <div className="droppableTargetBox">
-                  {droppedItems.map((item) => (
-                    <Draggable
-                      key={item.id}
-                      id={item.id}
-                      payload={item.payload}
-                    >
-                      <div className="draggable-item">
-                        <div className="draggable-item-header">
-                          <div className="draggable-item-title">
-                            <h4>{item.content}</h4>
-
-                            <div className="hover-box">
-                              <p>{item.payload}</p>
+                              <div className="hover-box">
+                                <p>{item.payload}</p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </Draggable>
-                  ))}
-                </div>
-              </Droppable>
+                      </Draggable>
+                    ))}
+                  </div>
+                </Droppable>
 
-              <div
-                role="button"
-                className="create-scenario-button"
-                onClick={() => {
-                  let prompt = droppedItems
-                    .map((item) => item.payload)
-                    .join(", ");
-                  setImage("");
-                  handleSubmit(prompt, setStory, playerCharacter);
-                  setShowDice(true);
-                }}
-              >
-                <h4>Create Scenario</h4>
+                <div
+                  role="button"
+                  className="create-scenario-button"
+                  onClick={() => {
+                    let prompt = droppedItems
+                      .map((item) => item.payload)
+                      .join(", ");
+                    setImage("");
+                    handleSubmit(prompt, setStory, playerCharacter);
+                    setShowDice(true);
+                  }}
+                >
+                  <h4>Create Scenario</h4>
+                </div>
               </div>
-            </div>
-          )}
+            )}
           </DndContext>
 
           <div className="results-container">
-
-            {image}
+            <img src={image} alt="story image" />
 
             {scenario.length > 40 && (
               <div className="scenario-container">
-          
                 <div>
                   {/* <p>{scenario}</p> */}
                   {/* parse this string into html */}
@@ -394,8 +387,6 @@ function App() {
                       __html: scenario,
                     }}
                   />
-
-                
                 </div>
 
                 <input
@@ -406,19 +397,24 @@ function App() {
                 />
 
                 <div
-                role="button"
-                className="create-scenario-button"
-                onClick={() => {
-                  handleImage(scenario, setImage)
-                  handleDecision(decision, story, scenario, setScenario, sceneNumber, playerCharacter);
-                  setDecision("");
+                  role="button"
+                  className="create-scenario-button"
+                  onClick={() => {
+                    handleImage(scenario, setImage);
+                    handleDecision(
+                      decision,
+                      story,
+                      scenario,
+                      setScenario,
+                      sceneNumber,
+                      playerCharacter
+                    );
+                    setDecision("");
 
-                  setSceneNumber(sceneNumber + 1);
-                }}
-              >
-
+                    setSceneNumber(sceneNumber + 1);
+                  }}
+                >
                   <h4>What do you do?</h4>
-                    
                 </div>
               </div>
             )}
@@ -435,17 +431,22 @@ function App() {
 
             {story.length > 50 && scenario.length < 30 && (
               <div>
-              <h2>We are ready to go!!</h2>
-              <div
-                role="button"
-                className="create-scenario-button"
-                onClick={() => {
-                  handleBeginStory(story, setScenario, scenario, playerCharacter);
-                }}
-              >
-                Confirm story and begin
+                <h2>We are ready to go!!</h2>
+                <div
+                  role="button"
+                  className="create-scenario-button"
+                  onClick={() => {
+                    handleBeginStory(
+                      story,
+                      setScenario,
+                      scenario,
+                      playerCharacter
+                    );
+                  }}
+                >
+                  Confirm story and begin
+                </div>
               </div>
-            </div>
             )}
           </div>
         </div>
