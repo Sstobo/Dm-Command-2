@@ -364,7 +364,7 @@ function App() {
                       .map((item) => item.payload)
                       .join(", ");
                     setImage("");
-                    handleSubmit(prompt, setStory, playerCharacter);
+                    handleSubmit(prompt, setStory, playerCharacter, setImage);
                     setShowDice(true);
                   }}
                 >
@@ -440,7 +440,9 @@ function App() {
                       story,
                       setScenario,
                       scenario,
-                      playerCharacter
+                      playerCharacter,
+                      setImage,
+                      handleImage
                     );
                   }}
                 >

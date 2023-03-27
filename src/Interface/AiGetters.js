@@ -56,7 +56,7 @@ export async function handleSubmit(prompt, setStory, playerCharacter) {
 
 // Begin
 
-export async function handleBeginStory(story, setScenario, scenario, playerCharacter) {
+export async function handleBeginStory(story, setScenario, scenario, playerCharacter, setImage, handleImage) {
 
   const stringifiedCharacter = JSON.stringify(playerCharacter);
 
@@ -95,6 +95,7 @@ export async function handleBeginStory(story, setScenario, scenario, playerChara
     .then((response) => {
       if (response.data.choices.length > 0) {
         setScenario(response.data.choices[0].message.content);
+        handleImage(scenario, setImage)
         console.log("scenario" + scenario);
       } else {
         console.error("Invalid scenario:", response);
@@ -166,8 +167,8 @@ export async function handleImage(prompt, setImage) {
     "Imagine an epic fantasy scene, in the style of old dungeons and dragons art. Use this snippet: " +
     prompt;
   const shortPrompt =
-    finalPrompt.length > 500
-      ? finalPrompt.substring(0, 800) + "..."
+    finalPrompt.length > 400
+      ? finalPrompt.substring(0, 400) + "..."
       : finalPrompt;
 
   console.log("image " + shortPrompt);
