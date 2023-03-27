@@ -364,7 +364,8 @@ function App() {
                       .map((item) => item.payload)
                       .join(", ");
                     setImage("");
-                    handleSubmit(prompt, setStory, playerCharacter, setImage);
+                    handleSubmit(prompt, setStory, playerCharacter,  setImage, handleImage);
+                    handleMenuClick("")
                     setShowDice(true);
                   }}
                 >
@@ -375,7 +376,9 @@ function App() {
           </DndContext>
 
           <div className="results-container">
-            <img src={image} alt="story image" />
+          
+           
+            <div className="results-container-text">
 
             {scenario.length > 40 && (
               <div className="scenario-container">
@@ -400,14 +403,9 @@ function App() {
                   role="button"
                   className="create-scenario-button"
                   onClick={() => {
-                    handleImage(scenario, setImage);
+                
                     handleDecision(
-                      decision,
-                      story,
-                      scenario,
-                      setScenario,
-                      sceneNumber,
-                      playerCharacter
+                      decision, story, scenario, setScenario, sceneNumber, playerCharacter, handleImage, setImage
                     );
                     setDecision("");
 
@@ -449,7 +447,14 @@ function App() {
                   Confirm story and begin
                 </div>
               </div>
+
             )}
+
+            </div>
+            <div className="results-container-image">
+            <img src={image} alt="story image" /> 
+
+            </div>
           </div>
         </div>
       </div>
