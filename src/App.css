@@ -262,6 +262,13 @@ color: #EBBE7A;
   padding:20px;
   width:200px;
   height:200px;
+  position: absolute;
+  /* center on screen */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+
 }
 
 ul {

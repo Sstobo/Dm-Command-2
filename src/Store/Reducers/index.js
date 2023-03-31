@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import encountersReducer from './encountersReducer';
-import monstersReducer from './/monstersReducer';
+import monstersReducer from './monstersReducer';
 import droppedItemsReducer from './droppedItemsReducer';
 import npcsReducer from './npcReducer';
 import locationsReducer from './locationsReducer';

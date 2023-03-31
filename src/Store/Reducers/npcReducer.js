@@ -5,10 +5,10 @@ import { getRandomForgottenRealmsGods } from '../../Data/NPCs/forgottenRealmsGod
 
 
 const initialState = [
-    { id: 'npc-1', content: 'Elf NPC', payload: getRandomElfNPC() },
-    { id: 'npc-2', content: 'Human NPC', payload: getRandomHumanNPC() },
-    { id: 'npc-3', content: 'Dwarf NPC', payload: getRandomDwarfNPC() },
-    { id: 'npc-4', content: 'God: Forgotten Realms', payload: getRandomForgottenRealmsGods() },
+    { id: 'npc-1', type: 'npcs', content: 'Elf NPC', payload: getRandomElfNPC() },
+    { id: 'npc-2', type: 'npcs', content: 'Human NPC', payload: getRandomHumanNPC() },
+    { id: 'npc-3', type: 'npcs', content: 'Dwarf NPC', payload: getRandomDwarfNPC() },
+    { id: 'npc-4', type: 'npcs', content: 'God: Forgotten Realms', payload: getRandomForgottenRealmsGods() },
 ];
 
 function npcsReducer(state = initialState, action) {

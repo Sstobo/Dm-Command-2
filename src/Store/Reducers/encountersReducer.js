@@ -6,11 +6,11 @@ import { getRandomForestEncounter } from '../../Data/Encounters/ForestEncounters
 
 
 const initialState = [
-  { id: 'encounter-1', content: 'City Encounter', payload: getRandomCityEncounter() },
-  { id: 'encounter-2', content: 'Desert Encounter', payload: getRandomDesertEncounter() },
-  { id: 'encounter-3', content: 'Mountain Encounter', payload: getRandomMountainEncounter() },
-  { id: 'encounter-4', content: 'Ocean Encounter', payload: getRandomOceanEncounter() },
-  { id: 'encounter-5', content: 'Forest Encounter', payload: getRandomForestEncounter() },
+  { id: 'encounter-1', type: 'encounters', content: 'City Encounter', payload: getRandomCityEncounter() },
+  { id: 'encounter-2', type: 'encounters', content: 'Desert Encounter', payload: getRandomDesertEncounter() },
+  { id: 'encounter-3', type: 'encounters', content: 'Mountain Encounter', payload: getRandomMountainEncounter() },
+  { id: 'encounter-4', type: 'encounters', content: 'Ocean Encounter', payload: getRandomOceanEncounter() },
+  { id: 'encounter-5', type: 'encounters', content: 'Forest Encounter', payload: getRandomForestEncounter() },
 ];
 
 function encountersReducer(state = initialState, action) {

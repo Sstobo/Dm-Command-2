@@ -2,7 +2,7 @@ import {getForgottenRealmsLocation} from '../../Data/Locations/ForgottenRealms';
 
 
 const initialState = [
-  { id: 'location-1', content: 'The Forgotten Realms', payload: getForgottenRealmsLocation() },
+  { id: 'location-1', type: 'locations', content: 'The Forgotten Realms', payload: getForgottenRealmsLocation() },
 
 ];
 

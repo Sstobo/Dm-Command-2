@@ -1,18 +1,20 @@
 import { Configuration, OpenAIApi } from "openai";
 import { storyCalibration} from "./PromptCalibration";
 import axios from "axios";
+import { getImageURL}  from "../Components/ImageGenerator/ImageGenerator";
 
 
 
 
-export async function handleSubmit(prompt, setStory, playerCharacter, setImage, handleImage) {
+
+export async function handleSubmit(prompt, setStory, playerCharacter, setImage, setShowDice) {
   // stringigy storyCalibration
   const stringifiedCalibration = JSON.stringify(storyCalibration);
   const stringifiedCharacter = JSON.stringify(playerCharacter);
 
   const systemPrompt = "The story information:" + stringifiedCalibration + "VERY IMPORTANT: The players character:" + stringifiedCharacter;
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
 
@@ -27,7 +29,7 @@ export async function handleSubmit(prompt, setStory, playerCharacter, setImage, 
         'You are DM Bot. You will never refer to yourself, instead you create text to read to the players, and connect the scenes of the plot according to their wishes. Create an array of exciting, creative, and imaginative stories and information based on the system index provided. Dive deep into each chapter and scenario, adding rich details, captivating narratives, and engaging characters that will enthrall players and motivate them to journey further into the story. This is the overview we will reference later for our grand adventure. This will help us follow a larger plot, and not forget details. Consider the key themes and environments, and craft a vibrant world that transports players into the heart of each chapter. Let your imagination run wild and bring the story to life, ensuring each element is a memorable and thrilling experience. Follow the pattern set in system index, and use the prompts from the assistant index to guide you. VERY IMPORTANT. Your response MUST be in the exact same format the system index prompt (but just the story part, ignore the player section. Follow that array strucutre exactly or the app will break.'
     },
   ];
-
+  setShowDice(true);
   // model: "gpt-3.5-turbo",
 
   console.log(GPT35TurboMessage);
@@ -45,8 +47,9 @@ export async function handleSubmit(prompt, setStory, playerCharacter, setImage, 
     .then((response) => {
       if (response.data.choices.length > 0) {
         setStory(response.data.choices[0].message.content);
-        handleImage(response.data.choices[0].message.content, setImage);
-        console.log(response);
+        let newImageUrl = getImageURL(response.data.choices[0].message.content);
+        setImage(newImageUrl);
+        setShowDice(false);
       } else {
         console.error("Invalid response:", response);
    
@@ -61,13 +64,13 @@ export async function handleSubmit(prompt, setStory, playerCharacter, setImage, 
 
 // Begin
 
-export async function handleBeginStory(story, setScenario, scenario, playerCharacter, setImage, handleImage) {
+export async function handleBeginStory(story, setScenario, scenario, playerCharacter, setImage,  setShowDice) {
 
   const stringifiedCharacter = JSON.stringify(playerCharacter);
 
   const systemPrompt = "The story information:" + story + "VERY IMPORTANT: The players character:" + stringifiedCharacter;
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
 
@@ -84,7 +87,7 @@ export async function handleBeginStory(story, setScenario, scenario, playerChara
   ];
 
   // model: "gpt-3.5-turbo",
-
+  setShowDice(true);
   console.log(GPT35TurboMessage);
   const response = await openai
     .createChatCompletion({
@@ -100,8 +103,10 @@ export async function handleBeginStory(story, setScenario, scenario, playerChara
     .then((response) => {
       if (response.data.choices.length > 0) {
         setScenario(response.data.choices[0].message.content);
-        handleImage(response.data.choices[0].message.content, setImage);
+        let newImageUrl = getImageURL(response.data.choices[0].message.content);
+        setImage(newImageUrl);
         console.log("scenario" + scenario);
+        setShowDice(false);
       } else {
         console.error("Invalid scenario:", response);
    
@@ -115,13 +120,13 @@ export async function handleBeginStory(story, setScenario, scenario, playerChara
 
 // Decide
 
-export async function handleDecision(decision, story, scenario, setScenario, sceneNumber, playerCharacter, handleImage, setImage) {
+export async function handleDecision(decision, story, scenario, setScenario, sceneNumber, playerCharacter,  setImage, setShowDice) {
 
   const stringifiedCharacter = JSON.stringify(playerCharacter);
 
   const systemPrompt = "The story information:" + story + "VERY IMPORTANT: The players character:" + stringifiedCharacter;
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
 
@@ -137,8 +142,8 @@ export async function handleDecision(decision, story, scenario, setScenario, sce
   ];
 
   // model: "gpt-3.5-turbo",
-
-  console.log(GPT35TurboMessage);
+  setShowDice(true);
+ 
   const response = await openai
     .createChatCompletion({
       model: "gpt-3.5-turbo",
@@ -153,7 +158,9 @@ export async function handleDecision(decision, story, scenario, setScenario, sce
     .then((response) => {
       if (response.data.choices.length > 0) {
         setScenario(response.data.choices[0].message.content);
-        handleImage(response.data.choices[0].message.content, setImage);
+        let newImageUrl = getImageURL(scenario);
+        setImage(newImageUrl);
+        setShowDice(false);
       } else {
         console.error("Invalid scenario:", response);
    
@@ -166,41 +173,42 @@ export async function handleDecision(decision, story, scenario, setScenario, sce
 
 
 
-export async function handleImage(prompt, setImage) {
+// export async function handleImage(prompt, setImage) {
 
-  const finalPrompt =
-    "Epic fantasy art. Realistic. Detailed." +
-    prompt;
+//   const finalPrompt =
+//     "Epic fantasy art in the style of Frank Frazetta. Realistic. Detailed." +
+//     prompt;
   
-    // remove and html tags from finalPrompt
-    const regex = /(<([^>]+)>)/gi;
-    const cleanPrompt = finalPrompt.replace(regex, "");
+//     // remove and html tags from finalPrompt
+//     const regex = /(<([^>]+)>)/gi;
+//     const cleanPrompt = finalPrompt.replace(regex, "");
 
 
-  const shortPrompt =
-    cleanPrompt.length > 200
-      ? cleanPrompt.substring(0, 200) + "..."
-      : cleanPrompt;
+//   const shortPrompt =
+//     cleanPrompt.length > 300
+//       ? cleanPrompt.substring(0, 300) + "..."
+//       : cleanPrompt;
 
-  console.log("image " + shortPrompt);
+//   console.log("image " + shortPrompt);
 
-  try {
-    const response = await axios.post('https://stablediffusionapi.com/api/v3/text2img', {
-      key: 'U0Ppg5KtekRI8RSvlfHtA18R3SHCsR2Wcjh3QXVKoY386T4D19obxoTJLi2A',
-      prompt: shortPrompt,
-      samples: 1,
-      width: 512,
-      height: 512,
-      num_inference_steps: 20,
-      guidance_scale: 7.5,
-      safety_checker: 'yes',
-    });
+//   try {
+//     const response = await axios.post('https://stablediffusionapi.com/api/v3/text2img', {
+//       key: 'U0Ppg5KtekRI8RSvlfHtA18R3SHCsR2Wcjh3QXVKoY386T4D19obxoTJLi2A',
+//       prompt: shortPrompt,
+//       samples: 1,
+//       width: 512,
+//       height: 512,
+//       num_inference_steps: 20,
+//       guidance_scale: 7.5,
+//       safety_checker: 'yes',
+//     });
 
-    if (response.status === 200) {
-      console.log(response.data.output[0]);
-      setImage(response.data.output[0]);
-    }
-  } catch (error) {
-    console.error('Error generating image:', error);
-  }
-}
+//     if (response.status === 200) {
+//       console.log(response.data.output[0]);
+//       setImage(response.data.output[0]);
+//     }
+//   } catch (error) {
+//     console.error('Error generating image:', error);
+//   }
+// }
+
