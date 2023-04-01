@@ -172,43 +172,46 @@ export async function handleDecision(decision, story, scenario, setScenario, sce
 }
 
 
+export async function handleImage(prompt, setImage, apiKey, width, height) {
 
-// export async function handleImage(prompt, setImage) {
-
-//   const finalPrompt =
-//     "Epic fantasy art in the style of Frank Frazetta. Realistic. Detailed." +
-//     prompt;
+  const finalPrompt =
+    "Epic fantasy art in the style of Frank Frazetta. Realistic. Detailed." +
+    prompt;
   
-//     // remove and html tags from finalPrompt
-//     const regex = /(<([^>]+)>)/gi;
-//     const cleanPrompt = finalPrompt.replace(regex, "");
+    // remove and html tags from finalPrompt
+    const regex = /(<([^>]+)>)/gi;
+    const cleanPrompt = finalPrompt.replace(regex, "");
 
 
-//   const shortPrompt =
-//     cleanPrompt.length > 300
-//       ? cleanPrompt.substring(0, 300) + "..."
-//       : cleanPrompt;
+  const shortPrompt =
+    cleanPrompt.length > 300
+      ? cleanPrompt.substring(0, 300) + "..."
+      : cleanPrompt;
 
-//   console.log("image " + shortPrompt);
+  console.log("image " + shortPrompt);
 
-//   try {
-//     const response = await axios.post('https://stablediffusionapi.com/api/v3/text2img', {
-//       key: 'U0Ppg5KtekRI8RSvlfHtA18R3SHCsR2Wcjh3QXVKoY386T4D19obxoTJLi2A',
-//       prompt: shortPrompt,
-//       samples: 1,
-//       width: 512,
-//       height: 512,
-//       num_inference_steps: 20,
-//       guidance_scale: 7.5,
-//       safety_checker: 'yes',
-//     });
+  try {
+    const response = await axios.post('https://stablediffusionapi.com/api/v3/text2img', {
+      key: apiKey,
+      prompt: shortPrompt,
+      samples: 1,
+      width: width,
+      height: height,
+      num_inference_steps: 20,
+      guidance_scale: 7.5,
+      safety_checker: 'yes',
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      mode: 'no-cors'
+    });
 
-//     if (response.status === 200) {
-//       console.log(response.data.output[0]);
-//       setImage(response.data.output[0]);
-//     }
-//   } catch (error) {
-//     console.error('Error generating image:', error);
-//   }
-// }
-
+    if (response.status === 200) {
+      console.log(response.data.output[0]);
+      setImage(response.data.output[0]);
+    }
+  } catch (error) {
+    console.error('Error generating image:', error);
+  }
+}

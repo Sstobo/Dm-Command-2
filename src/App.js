@@ -5,6 +5,7 @@ import {
   handleSubmit,
   handleBeginStory,
   handleDecision,
+  handleImage,
 } from "./Interface/AiGetters";
 import "./App.css";
 import { handleDragStart, handleDragEnd } from "./Interface/Handlers";
@@ -178,6 +179,7 @@ function App() {
                 setShowDice
               );
               setDecision("");
+              handleImage(scenario, setImage);
               setSceneNumber(sceneNumber + 1);
             }}
             story={story}
