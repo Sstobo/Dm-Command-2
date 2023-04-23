@@ -120,7 +120,7 @@ export async function handleBeginStory(story, setScenario, scenario, playerChara
 
 // Decide
 
-export async function handleDecision(decision, story, scenario, setScenario, sceneNumber, playerCharacter,  setImage, setShowDice, apiKey) {
+export async function handleDecision(decision, story, scenario, setScenario, sceneNumber, playerCharacter,  setImage, image, setShowDice, apiKey) {
 
   const stringifiedCharacter = JSON.stringify(playerCharacter);
 

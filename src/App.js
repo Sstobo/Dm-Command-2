@@ -178,6 +178,7 @@ function App() {
                 sceneNumber,
                 playerCharacter,
                 setImage,
+                image,
                 setShowDice,
                 apiKey,
               );
@@ -188,7 +189,6 @@ function App() {
             story={story}
             sceneNumber={sceneNumber}
             playerCharacter={playerCharacter}
-          
             setImage={setImage}
             image={image}
             setScenario={setScenario}
