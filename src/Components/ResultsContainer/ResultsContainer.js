@@ -12,26 +12,15 @@ const ResultsContainer = ({
   setShowDice,
   showDice,
   handleBeginStory, // Add handleBeginStory prop
+  image,
+  setImage,
   setScenario, // Add setScenario prop
   setSceneNumber, // Add setSceneNumber prop
+  apiKey, // Add apiKey prop
 }) => {
-  const [image, setImage] = useState('');
 
-  useEffect(() => {
-    const loadGeneratedImage = async () => {
-      const prompt = scenario;
-      try {
-        const url = await getImageURL(prompt);
-        setImage(url);
-      } catch (error) {
-        console.error('Failed to load image:', error);
-      }
-    };
 
-    if (scenario) {
-      loadGeneratedImage();
-    }
-  }, [scenario]);
+
 
   const handleClick = () => {
     handleDecision(
@@ -42,10 +31,12 @@ const ResultsContainer = ({
       sceneNumber,
       playerCharacter,
       setImage,
-      setShowDice
+      setShowDice,
+      apiKey
     );
     setDecision('');
     setSceneNumber(sceneNumber + 1);
+    console.log(image);
   };
 
   const handleConfirm = () => {
@@ -55,8 +46,10 @@ const ResultsContainer = ({
       scenario,
       playerCharacter,
       setImage,
-      setShowDice
+      setShowDice,
+      apiKey
     );
+    console.log(image);
   };
 
   return (
@@ -101,7 +94,7 @@ const ResultsContainer = ({
         )}
       </div>
       <div className="results-container-image">
-        {image && <img src={image} alt="story image" />}
+      {image && (  <img src={image} alt="story image" /> )}
       </div>
     </div>
   );

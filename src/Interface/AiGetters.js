@@ -7,14 +7,14 @@ import { getImageURL}  from "../Components/ImageGenerator/ImageGenerator";
 
 
 
-export async function handleSubmit(prompt, setStory, playerCharacter, setImage, setShowDice) {
+export async function handleSubmit(prompt, setStory, playerCharacter, setImage, setShowDice, apiKey) {
   // stringigy storyCalibration
   const stringifiedCalibration = JSON.stringify(storyCalibration);
   const stringifiedCharacter = JSON.stringify(playerCharacter);
 
   const systemPrompt = "The story information:" + stringifiedCalibration + "VERY IMPORTANT: The players character:" + stringifiedCharacter;
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: apiKey,
   });
   const openai = new OpenAIApi(configuration);
 
@@ -64,13 +64,13 @@ export async function handleSubmit(prompt, setStory, playerCharacter, setImage, 
 
 // Begin
 
-export async function handleBeginStory(story, setScenario, scenario, playerCharacter, setImage,  setShowDice) {
+export async function handleBeginStory(story, setScenario, scenario, playerCharacter, setImage,  setShowDice, apiKey) {
 
   const stringifiedCharacter = JSON.stringify(playerCharacter);
 
   const systemPrompt = "The story information:" + story + "VERY IMPORTANT: The players character:" + stringifiedCharacter;
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: apiKey,
   });
   const openai = new OpenAIApi(configuration);
 
@@ -120,13 +120,13 @@ export async function handleBeginStory(story, setScenario, scenario, playerChara
 
 // Decide
 
-export async function handleDecision(decision, story, scenario, setScenario, sceneNumber, playerCharacter,  setImage, setShowDice) {
+export async function handleDecision(decision, story, scenario, setScenario, sceneNumber, playerCharacter,  setImage, setShowDice, apiKey) {
 
   const stringifiedCharacter = JSON.stringify(playerCharacter);
 
   const systemPrompt = "The story information:" + story + "VERY IMPORTANT: The players character:" + stringifiedCharacter;
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: apiKey,
   });
   const openai = new OpenAIApi(configuration);
 
@@ -172,46 +172,51 @@ export async function handleDecision(decision, story, scenario, setScenario, sce
 }
 
 
-export async function handleImage(prompt, setImage, apiKey, width, height) {
 
+
+
+// keeper
+export async function  handleImage(prompt, setImage, apiKey) {
+
+  console.log("image " + prompt);
   const finalPrompt =
-    "Epic fantasy art in the style of Frank Frazetta. Realistic. Detailed." +
-    prompt;
+  "Epic fantasy art in the style of Frank Frazetta. Realistic. Detailed." +
+  prompt;
+
+  // remove and html tags from finalPrompt
+  const regex = /(<([^>]+)>)/gi;
+  const cleanPrompt = finalPrompt.replace(regex, "");
+
+
+const shortPrompt =
+  cleanPrompt.length > 300
+    ? cleanPrompt.substring(0, 300) + "..."
+    : cleanPrompt;
+
+console.log("image " + shortPrompt);
+  // ensure prompt is less than 50 words, cut words off and return less than 50 words
   
-    // remove and html tags from finalPrompt
-    const regex = /(<([^>]+)>)/gi;
-    const cleanPrompt = finalPrompt.replace(regex, "");
-
-
-  const shortPrompt =
-    cleanPrompt.length > 300
-      ? cleanPrompt.substring(0, 300) + "..."
-      : cleanPrompt;
-
-  console.log("image " + shortPrompt);
+  const configuration = new Configuration({
+    apiKey: apiKey,
+  });
+  const openai = new OpenAIApi(configuration);
 
   try {
-    const response = await axios.post('https://stablediffusionapi.com/api/v3/text2img', {
-      key: apiKey,
-      prompt: shortPrompt,
-      samples: 1,
-      width: width,
-      height: height,
-      num_inference_steps: 20,
-      guidance_scale: 7.5,
-      safety_checker: 'yes',
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      mode: 'no-cors'
-    });
-
+    const response = await openai.createImage({
+        prompt: shortPrompt,
+        n: 1,
+        size: "512x512",
+      });
+    
     if (response.status === 200) {
-      console.log(response.data.output[0]);
-      setImage(response.data.output[0]);
+      console.log(response)
+      
+      console.log(response.data.data[0].url);
+      setImage(response.data.data[0].url);
     }
-  } catch (error) {
-    console.error('Error generating image:', error);
   }
+  catch(error) {
+    console.error(error);
+  }
+ 
 }

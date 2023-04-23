@@ -182,12 +182,12 @@ color: #EBBE7A;
   padding: 20px;
 }
 .results-container-image {
-  width:60%;
+  width:30%;
   padding:20px;
 }
 
 .results-container-text {
-  width:35%;
+  width:55%;
   padding:20px;
 }
 .results-container img {
@@ -321,4 +321,8 @@ ul {
   font-weight: bold;;
   /* text-wrap wrap */
   overflow-wrap: break-word;
+}
+
+.api-key-input {
+  margin-left:30px
 }

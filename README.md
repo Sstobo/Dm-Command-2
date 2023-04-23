@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# DM Command Center
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+DM Command Center is a React app designed to help Dungeon Masters (DMs) generate stories and manage their game sessions. It uses React for state management and contains hundreds of random options in JSON objects, scraped from various D&D websites online and summarized by Chat GPT separately. This app is an experiment in story generation and homemade memory.
 
-## Available Scripts
+![Step 1](public/step1.jpg)
+![Step 2](public/step2.jpg)
+![Step 3](public/step3.jpg)
+![Step 4](public/step4.jpg)
+![Step 5](public/step5.jpg)
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+First, make sure you have Node.js installed on your system. Then, follow these steps to install and run the app:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Clone the repository to your local machine.
+2. Navigate to the project directory in your terminal.
+3. Run the following command to install the required dependencies:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+npm install
+```
 
-### `npm test`
+4. Start the development server by running:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm start
+```
 
-### `npm run build`
+The app should now be running on your local machine. Open your browser and navigate to `http://localhost:3000` to access the app.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Usage
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Enter your openai api key in the top input
+https://platform.openai.com/account/api-keys
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Navigate between menus on the left, and drag items to the Story Suggestions box.
+Each object contains a random index of data from large objects of relevant items
+Drag and drop items into empty space to remove them, and replace them with a new random index
+Once you have added your 'ingredients', click play and wait for your content to load.
+Begin interacting with your new world!
 
-### `npm run eject`
+The console provides a lot of information.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Not working
+Images and character creation arent really working yet, im not working on this repo atm, but if anyone has a suggestion id be delighted.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Contributing
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Contributions are welcome! If you have ideas for new features, improvements, or bug fixes, feel free to open an issue to discuss your ideas. If you'd like to contribute code, please fork the repository, make your changes, and submit a pull request.
 
-## Learn More
+When contributing, please ensure that you provide clear and concise descriptions of the changes you've made and update any tests or documentation as necessary.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
 
-### Code Splitting
+This project is licensed under the MIT License.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Acknowledgements
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This app was built before the I discovered Langchain and was inspired by the creativity and passion of the D&D community. A special thanks to all the D&D websites and resources that provided the content for this app. This readme was co-written by GPT-4.

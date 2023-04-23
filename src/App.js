@@ -129,12 +129,12 @@ function App() {
                 )
             )}
 
-            {selectedMenu === "createPlayer" && (
+            {/* {selectedMenu === "createPlayer" && (
               <CharacterCreator
                 playerCharacter={playerCharacter}
                 setPlayerCharacter={setPlayerCharacter}
               />
-            )}
+            )} */}
 
             {story.length < 50 && (
               <DroppableContainer
@@ -152,7 +152,8 @@ function App() {
                     setStory,
                     playerCharacter,
                     setImage,
-                    setShowDice
+                    setShowDice,
+                    apiKey
                   );
                   handleMenuClick("");
                 }}
@@ -167,6 +168,7 @@ function App() {
             setShowDice={setShowDice}
             setDecision={setDecision}
             handleBeginStory={handleBeginStory}
+           
             handleDecision={() => {
               handleDecision(
                 decision,
@@ -176,10 +178,11 @@ function App() {
                 sceneNumber,
                 playerCharacter,
                 setImage,
-                setShowDice
+                setShowDice,
+                apiKey,
               );
               setDecision("");
-              handleImage(scenario, setImage);
+              handleImage(scenario, setImage, apiKey);
               setSceneNumber(sceneNumber + 1);
             }}
             story={story}
@@ -190,7 +193,7 @@ function App() {
             image={image}
             setScenario={setScenario}
             setSceneNumber={setSceneNumber}
-            
+            apiKey={apiKey}
           />
         </div>
       </div>
