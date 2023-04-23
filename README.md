@@ -2,6 +2,8 @@
 
 OpenAI, ChatGPT powered, stateful LLM storytelling application.
 
+-view it live https://jazzy-cheesecake-2dd357.netlify.app/
+
 DM Command Center is a React app designed to help Dungeon Masters (DMs) generate stories and manage their game sessions. It uses React for state management and contains hundreds of random options in JSON objects, scraped from various D&D websites online and summarized by Chat GPT separately. This app is an experiment in story generation and homemade memory.
 
 ![Step 1](public/step1.png)
