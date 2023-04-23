@@ -48,7 +48,7 @@ export async function handleSubmit(prompt, setStory, playerCharacter, setImage, 
       if (response.data.choices.length > 0) {
         setStory(response.data.choices[0].message.content);
         let newImageUrl = getImageURL(response.data.choices[0].message.content);
-        setImage(newImageUrl);
+      
         setShowDice(false);
       } else {
         console.error("Invalid response:", response);
@@ -104,7 +104,7 @@ export async function handleBeginStory(story, setScenario, scenario, playerChara
       if (response.data.choices.length > 0) {
         setScenario(response.data.choices[0].message.content);
         let newImageUrl = getImageURL(response.data.choices[0].message.content);
-        setImage(newImageUrl);
+     
         console.log("scenario" + scenario);
         setShowDice(false);
       } else {
@@ -159,7 +159,7 @@ export async function handleDecision(decision, story, scenario, setScenario, sce
       if (response.data.choices.length > 0) {
         setScenario(response.data.choices[0].message.content);
         let newImageUrl = getImageURL(scenario);
-        setImage(newImageUrl);
+
         setShowDice(false);
       } else {
         console.error("Invalid scenario:", response);

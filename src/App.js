@@ -146,7 +146,7 @@ function App() {
                   let prompt = droppedItems
                     .map((item) => item.payload)
                     .join(", ");
-                  setImage("");
+         
                   handleSubmit(
                     prompt,
                     setStory,
